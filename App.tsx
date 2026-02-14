@@ -39,10 +39,10 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-2xl"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-normal leading-[1.05] tracking-tight text-neutral-900 mb-8">
+          <h1 className="text-4xl md:text-6xl lg:text-8xl font-normal leading-[1.1] tracking-tight text-neutral-900 mb-6">
             Turning your hotel into a <span className="italic font-serif">destination</span>.
           </h1>
-          <p className="max-w-xl text-lg md:text-xl text-neutral-500 leading-relaxed mb-10">
+          <p className="max-w-xl text-base md:text-lg lg:text-xl text-neutral-500 leading-relaxed mb-8">
             <span className="font-semibold text-neutral-900">Your rooms have walls. Your experience shouldn't.</span>
             <br />
             By connecting your hotel to curated experiences, you stop being just a place to sleep and start being the reason they travel.
@@ -204,7 +204,7 @@ const Pillars = () => {
         >
             <div className="text-center max-w-4xl mx-auto px-6">
                 <motion.h2 
-                    className="text-7xl md:text-8xl lg:text-9xl font-bold leading-[0.95] tracking-tight mb-6"
+                    className="text-5xl md:text-7xl lg:text-9xl font-bold leading-[1.05] tracking-tight mb-6"
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
@@ -214,7 +214,7 @@ const Pillars = () => {
                     <span className="text-neutral-300 font-bold">Reimagined.</span>
                 </motion.h2>
                 <motion.p 
-                    className="text-neutral-400 text-xl md:text-2xl leading-relaxed"
+                    className="text-neutral-400 text-base md:text-xl lg:text-2xl leading-relaxed"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
@@ -230,7 +230,7 @@ const Pillars = () => {
             {pillars.map((pillar, index) => (
                 <motion.div 
                     key={index} 
-                    className="min-h-screen flex items-center py-32 snap-start snap-always"
+                    className="min-h-screen flex items-center py-16 md:py-32 snap-start snap-always"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true, amount: 0.2 }}
@@ -246,8 +246,8 @@ const Pillars = () => {
                                     transition={{ duration: 0.6 }}
                                 >
                                     <span className="text-xs font-mono text-neutral-400 mb-6 block">0{index + 1}</span>
-                                    <h3 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-900 mb-6 tracking-tight leading-[0.95]">{pillar.title}</h3>
-                                    <p className="text-xl text-neutral-400 mb-8 font-light">{pillar.subtitle}</p>
+                                    <h3 className="text-4xl md:text-6xl lg:text-8xl font-bold text-neutral-900 mb-4 md:mb-6 tracking-tight leading-[1.1]">{pillar.title}</h3>
+                                    <p className="text-lg md:text-xl text-neutral-400 mb-6 md:mb-8 font-light">{pillar.subtitle}</p>
                                     <div className="text-neutral-600 text-base leading-relaxed max-w-xl" dangerouslySetInnerHTML={{ __html: pillar.content }} />
                                 </motion.div>
                                 <motion.div 
@@ -286,8 +286,8 @@ const Pillars = () => {
                                 transition={{ duration: 0.6 }}
                             >
                                 <span className="text-xs font-mono text-neutral-400 mb-6 block">0{index + 1}</span>
-                                <h3 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-900 mb-6 tracking-tight leading-[0.95]">{pillar.title}</h3>
-                                <p className="text-xl text-neutral-400 mb-8 font-light">{pillar.subtitle}</p>
+                                <h3 className="text-4xl md:text-6xl lg:text-8xl font-bold text-neutral-900 mb-4 md:mb-6 tracking-tight leading-[1.1]">{pillar.title}</h3>
+                                <p className="text-lg md:text-xl text-neutral-400 mb-6 md:mb-8 font-light">{pillar.subtitle}</p>
                                 <div className="text-neutral-600 text-base leading-relaxed max-w-2xl" dangerouslySetInnerHTML={{ __html: pillar.content }} />
                             </motion.div>
                         )}
@@ -390,7 +390,7 @@ const Advantages = () => {
         <Section className="py-32 min-h-screen flex items-center snap-start snap-always">
             <div className="w-full">
                 <div className="text-center mb-20">
-                    <h2 className="text-7xl md:text-8xl lg:text-9xl font-bold leading-[0.95] tracking-tight">Core Advantage</h2>
+                    <h2 className="text-5xl md:text-7xl lg:text-9xl font-bold leading-[1.05] tracking-tight">Core Advantage</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                     {advantages.map((adv, i) => (
