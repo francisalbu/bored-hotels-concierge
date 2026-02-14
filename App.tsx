@@ -76,7 +76,7 @@ const Challenge = () => {
   return (
     <Section className="bg-white rounded-[3rem] my-12 shadow-sm border border-neutral-100/50 overflow-hidden min-h-screen flex items-center snap-start snap-always">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div className="order-2 lg:order-1">
+        <div className="order-1">
           <h2 className="text-3xl md:text-5xl font-normal mb-6 tracking-tight">
             Escape the <br/><span className="text-neutral-400">Commodity Trap.</span>
           </h2>
@@ -89,7 +89,7 @@ const Challenge = () => {
             </p>
           </div>
         </div>
-        <div className="order-1 lg:order-2 relative aspect-square md:aspect-[4/3] rounded-[2rem] overflow-hidden group shadow-lg">
+        <div className="order-2 relative aspect-square md:aspect-[4/3] rounded-[2rem] overflow-hidden group shadow-lg">
              <img 
                 src="/public3.png"
                 alt="Luxury Hotel"
@@ -332,7 +332,7 @@ const StatItem = ({ value, label, sub }: { value: string, label: string, sub: st
 const Performance = () => {
     return (
         <Section id="performance" className="py-20 md:py-32 snap-start snap-always">
-             <div className="max-w-6xl mx-auto px-6">
+             <div className="max-w-7xl mx-auto px-6">
                 <div className="relative rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl">
                     <div className="absolute inset-0 z-0">
                         <img 
