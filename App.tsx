@@ -17,11 +17,11 @@ const Navbar = () => (
       </div>
       <span className="font-semibold tracking-tight text-lg">BORED</span>
     </div>
-    <div className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-500">
-      <a href="#discover" className="hover:text-black transition-colors">Discover</a>
-      <a href="#performance" className="hover:text-black transition-colors">Performance</a>
-    </div>
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-6">
+      <div className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-500">
+        <a href="#discover" className="hover:text-black transition-colors">Discover</a>
+        <a href="#performance" className="hover:text-black transition-colors">Performance</a>
+      </div>
       <Button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="!px-6 !py-2.5 !text-xs">
         Book a Demo
       </Button>
