@@ -31,7 +31,7 @@ const Navbar = () => (
 
 const Hero = () => {
   return (
-    <Section className="min-h-screen flex flex-col justify-center pt-32 lg:pt-0 snap-start snap-always">
+    <Section className="min-h-screen flex flex-col justify-center pt-24 md:pt-32 snap-start snap-always">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
