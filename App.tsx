@@ -43,7 +43,9 @@ const Hero = () => {
             Turning your hotel into a <span className="italic font-serif">destination</span>.
           </h1>
           <p className="max-w-xl text-lg md:text-xl text-neutral-500 leading-relaxed mb-10">
-            Your rooms have walls. Your community doesn't. When you sell the pulse of the city through a unified ecosystem, you stop being a commodity.
+            <span className="font-semibold text-neutral-900">Your rooms have walls. Your experience shouldn't.</span>
+            <br />
+            By connecting your hotel to curated experiences, you stop being just a place to sleep and start being the reason they travel.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
