@@ -240,10 +240,10 @@ const Pillars = () => {
                             <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-center">
                                 <motion.div
                                     className="lg:col-span-2 order-1"
-                                    initial={{ opacity: 0, x: -40 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
                                     viewport={{ once: true, amount: 0.3 }}
-                                    transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                                    transition={{ duration: 0.6 }}
                                 >
                                     <span className="text-xs font-mono text-neutral-400 mb-6 block">0{index + 1}</span>
                                     <h3 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-900 mb-6 tracking-tight leading-[0.95]">{pillar.title}</h3>
@@ -252,10 +252,10 @@ const Pillars = () => {
                                 </motion.div>
                                 <motion.div 
                                     className="lg:col-span-3 order-2"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1 }}
                                     viewport={{ once: true, amount: 0.3 }}
-                                    transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                                    transition={{ duration: 0.6 }}
                                 >
                                     {pillar.video ? (
                                         <div className={`w-full rounded-2xl shadow-2xl shadow-black/30 overflow-hidden ${pillar.title === 'BOOKING' ? 'max-w-sm lg:max-w-md' : ''}`}>
@@ -280,10 +280,10 @@ const Pillars = () => {
                         ) : (
                             <motion.div 
                                 className="max-w-3xl text-left"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
                                 viewport={{ once: true, amount: 0.3 }}
-                                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                                transition={{ duration: 0.6 }}
                             >
                                 <span className="text-xs font-mono text-neutral-400 mb-6 block">0{index + 1}</span>
                                 <h3 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-900 mb-6 tracking-tight leading-[0.95]">{pillar.title}</h3>
