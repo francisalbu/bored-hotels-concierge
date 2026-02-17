@@ -416,6 +416,77 @@ const Advantages = () => {
 };
 
 const CTA = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        propertyName: '',
+        email: ''
+    });
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Configure your Google Apps Script Web App URL here
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxrjmbCuISk6I0ipi_AGI4nZFpvP0gWnNp6PpSbkjNsGaylY-nGcgaENuEoosx2jEf8/exec';
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        // Validação básica
+        if (!formData.name || !formData.propertyName || !formData.email) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        const newSubmission = {
+            ...formData,
+            timestamp: new Date().toISOString(),
+            id: Date.now()
+        };
+
+        try {
+            // Enviar para Google Sheets (se URL estiver configurada)
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newSubmission)
+                });
+            }
+
+            // Guardar também no localStorage como backup
+            const submissions = JSON.parse(localStorage.getItem('boredDemoRequests') || '[]');
+            submissions.push(newSubmission);
+            localStorage.setItem('boredDemoRequests', JSON.stringify(submissions));
+
+            // Mostrar sucesso
+            setIsSubmitted(true);
+            setShowSuccess(true);
+
+            // Limpar formulário após 3 segundos
+            setTimeout(() => {
+                setFormData({ name: '', propertyName: '', email: '' });
+                setShowSuccess(false);
+            }, 3000);
+
+            console.log('Data saved:', newSubmission);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('There was an error submitting the form. Your data has been saved locally.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <Section id="contact" className="pb-16 md:pb-32 min-h-screen flex items-center snap-start snap-always">
             <div className="w-full max-w-6xl mx-auto px-6">
@@ -432,38 +503,85 @@ const CTA = () => {
 
                     {/* Right side - Form */}
                     <div className="bg-white p-6 md:p-8 lg:p-10 rounded-2xl md:rounded-[2rem] shadow-xl shadow-neutral-200/50 border border-neutral-100">
-                        <form className="space-y-4 md:space-y-5" onSubmit={(e) => e.preventDefault()}>
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Name</label>
-                                <input type="text" className="w-full bg-neutral-50 border border-neutral-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none text-base" placeholder="Jane Doe" />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Property Name</label>
-                                <input type="text" className="w-full bg-neutral-50 border border-neutral-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none text-base" placeholder="Grand Hotel" />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Email</label>
-                                <input type="email" className="w-full bg-neutral-50 border border-neutral-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none text-base" placeholder="jane@example.com" />
-                            </div>
-                            
-                            <div className="pt-2">
-                                <Button className="w-full !py-3 md:!py-4 justify-center !text-base">
-                                    Book a Demo
-                                </Button>
-                            </div>
-                        </form>
+                        <AnimatePresence mode="wait">
+                            {showSuccess ? (
+                                <motion.div
+                                    key="success"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    className="flex flex-col items-center justify-center py-12 text-center"
+                                >
+                                    <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
+                                        <Check size={32} className="text-white" />
+                                    </div>
+                                    <h3 className="text-2xl font-semibold mb-2">Thank you!</h3>
+                                    <p className="text-neutral-500">We'll be in touch soon.</p>
+                                </motion.div>
+                            ) : (
+                                <motion.form
+                                    key="form"
+                                    initial={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="space-y-4 md:space-y-5"
+                                    onSubmit={handleSubmit}
+                                >
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Name</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-neutral-50 border border-neutral-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none text-base"
+                                            placeholder="Jane Doe"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Property Name</label>
+                                        <input
+                                            type="text"
+                                            name="propertyName"
+                                            value={formData.propertyName}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-neutral-50 border border-neutral-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none text-base"
+                                            placeholder="Grand Hotel"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Email</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            className="w-full bg-neutral-50 border border-neutral-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-black focus:border-transparent transition-all outline-none text-base"
+                                            placeholder="jane@example.com"
+                                            required
+                                        />
+                                    </div>
+                                    
+                                    <div className="pt-2">
+                                        <Button 
+                                            type="submit" 
+                                            disabled={isLoading}
+                                            className="w-full !py-3 md:!py-4 justify-center !text-base"
+                                        >
+                                            {isLoading ? 'Sending...' : 'Book a Demo'}
+                                        </Button>
+                                    </div>
+                                </motion.form>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
 
                 {/* Footer */}
                 <footer className="pt-8 md:pt-12 border-t border-neutral-200">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+                    <div className="flex justify-center items-center">
                         <p className="text-neutral-900 font-semibold text-sm md:text-base">BORED.</p>
-                        <div className="flex gap-6 md:gap-8 text-sm text-neutral-500">
-                            <a href="#" className="hover:text-black transition-colors">Privacy</a>
-                            <a href="#" className="hover:text-black transition-colors">Terms</a>
-                            <a href="#" className="hover:text-black transition-colors">Twitter</a>
-                        </div>
                     </div>
                 </footer>
             </div>

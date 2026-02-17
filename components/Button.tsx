@@ -7,9 +7,10 @@ interface ButtonProps {
   onClick?: () => void;
   className?: string;
   type?: 'button' | 'submit';
+  disabled?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', onClick, className = '', type = 'button' }) => {
+export const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', onClick, className = '', type = 'button', disabled = false }) => {
   const baseStyles = "relative overflow-hidden rounded-full px-8 py-4 font-medium transition-all duration-300 flex items-center justify-center gap-2 group";
   
   const variants = {
@@ -20,11 +21,12 @@ export const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', o
 
   return (
     <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`${baseStyles} ${variants[variant]} ${className}`}
+      whileHover={{ scale: disabled ? 1 : 1.02 }}
+      whileTap={{ scale: disabled ? 1 : 0.98 }}
+      className={`${baseStyles} ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       onClick={onClick}
       type={type}
+      disabled={disabled}
     >
       <span className="relative z-10 text-sm tracking-wide uppercase">{children}</span>
     </motion.button>
