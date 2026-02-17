@@ -591,12 +591,15 @@ const CTA = () => {
 
 const App: React.FC = () => {
   useEffect(() => {
+    // Detect if device is mobile
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+    
     const lenis = new Lenis({
-      duration: 0.8,
+      duration: isMobile ? 1 : 0.8,
       easing: (t) => t,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      smoothWheel: true,
+      smoothWheel: !isMobile,
       wheelMultiplier: 1.2,
       smoothTouch: false,
       touchMultiplier: 2,
