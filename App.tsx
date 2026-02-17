@@ -451,22 +451,28 @@ const CTA = () => {
         };
 
         try {
-            // Enviar para Google Sheets (se URL estiver configurada)
-            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newSubmission)
-                });
-            }
-
-            // Guardar também no localStorage como backup
+            // Guardar no localStorage primeiro
             const submissions = JSON.parse(localStorage.getItem('boredDemoRequests') || '[]');
             submissions.push(newSubmission);
             localStorage.setItem('boredDemoRequests', JSON.stringify(submissions));
+            
+            console.log('Sending to Google Sheets:', newSubmission);
+            console.log('URL:', GOOGLE_SCRIPT_URL);
+
+            // Enviar para Google Sheets (se URL estiver configurada)
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: JSON.stringify(newSubmission),
+                    redirect: 'follow'
+                });
+                
+                console.log('Google Sheets response status:', response.status);
+                console.log('Response:', response);
+            }
 
             // Mostrar sucesso
             setIsSubmitted(true);
@@ -478,10 +484,17 @@ const CTA = () => {
                 setShowSuccess(false);
             }, 3000);
 
-            console.log('Data saved:', newSubmission);
+            console.log('✅ Data saved successfully:', newSubmission);
         } catch (error) {
-            console.error('Error submitting form:', error);
-            alert('There was an error submitting the form. Your data has been saved locally.');
+            console.error('❌ Error submitting form:', error);
+            // Não mostrar erro ao usuário, pois os dados estão salvos localmente
+            setIsSubmitted(true);
+            setShowSuccess(true);
+            
+            setTimeout(() => {
+                setFormData({ name: '', propertyName: '', email: '' });
+                setShowSuccess(false);
+            }, 3000);
         } finally {
             setIsLoading(false);
         }
@@ -591,21 +604,28 @@ const CTA = () => {
 
 const App: React.FC = () => {
   useEffect(() => {
-    // Detect if device is mobile
+    // Detect if device is mobile or Safari
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     
-    const lenis = new Lenis({
-      duration: isMobile ? 1 : 0.8,
-      easing: (t) => t,
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: !isMobile,
-      wheelMultiplier: 1.2,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-      autoResize: true,
-    });
+    // Disable Lenis on Safari to prevent compatibility issues
+    if (isSafari) {
+      return;
+    }
+    
+    try {
+      const lenis = new Lenis({
+        duration: isMobile ? 1 : 0.8,
+        easing: (t) => t,
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: !isMobile,
+        wheelMultiplier: 1.2,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+        autoResize: true,
+      });
 
     function raf(time: number) {
       lenis.raf(time);
@@ -614,9 +634,12 @@ const App: React.FC = () => {
 
     requestAnimationFrame(raf);
 
-    return () => {
-      lenis.destroy();
-    };
+      return () => {
+        lenis.destroy();
+      };
+    } catch (error) {
+      console.error('Lenis initialization error:', error);
+    }
   }, []);
 
   return (

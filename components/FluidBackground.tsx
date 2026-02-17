@@ -2,6 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const FluidBackground: React.FC = () => {
+  // Detect Safari for compatibility adjustments
+  const isSafari = typeof window !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const blendMode = isSafari ? 'normal' : 'multiply';
+  
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
       <motion.div
@@ -13,9 +17,11 @@ const FluidBackground: React.FC = () => {
         transition={{
           duration: 20,
           repeat: Infinity,
-          ease: "easeInOut"
+          ease: "easeInOut",
+          repeatType: "loop"
         }}
-        className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gray-200 rounded-full mix-blend-multiply filter blur-[128px] opacity-40"
+        className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gray-200 rounded-full filter blur-[128px] opacity-40"
+        style={{ mixBlendMode: blendMode as any }}
       />
       <motion.div
         animate={{
@@ -26,9 +32,11 @@ const FluidBackground: React.FC = () => {
         transition={{
           duration: 25,
           repeat: Infinity,
-          ease: "easeInOut"
+          ease: "easeInOut",
+          repeatType: "loop"
         }}
-        className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gray-100 rounded-full mix-blend-multiply filter blur-[128px] opacity-40"
+        className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gray-100 rounded-full filter blur-[128px] opacity-40"
+        style={{ mixBlendMode: blendMode as any }}
       />
       <motion.div
         animate={{
@@ -39,9 +47,11 @@ const FluidBackground: React.FC = () => {
         transition={{
           duration: 15,
           repeat: Infinity,
-          ease: "easeInOut"
+          ease: "easeInOut",
+          repeatType: "loop"
         }}
-        className="absolute -bottom-32 left-1/3 w-[600px] h-[600px] bg-slate-50 rounded-full mix-blend-multiply filter blur-[128px] opacity-50"
+        className="absolute -bottom-32 left-1/3 w-[600px] h-[600px] bg-slate-50 rounded-full filter blur-[128px] opacity-50"
+        style={{ mixBlendMode: blendMode as any }}
       />
     </div>
   );

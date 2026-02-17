@@ -45,16 +45,36 @@
       }
     </script>
     <style>
+      * {
+        -webkit-overflow-scrolling: touch;
+      }
+      
       body {
         background-color: #fcfcfc;
         color: #0a0a0a;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
       }
+      
       /* Hide scrollbar for clean look */
       ::-webkit-scrollbar {
         width: 0px;
         background: transparent;
+      }
+      
+      /* Safari-specific fixes */
+      @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+        .backdrop-blur-md {
+          -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+        }
+      }
+      
+      /* Ensure touch events work properly on iOS */
+      button, a {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
       }
     </style>
   <script type="importmap">
