@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Box, BarChart3, Globe, ShieldCheck, Zap, User, Lock, ChevronRight, Check } from 'lucide-react';
-import Lenis from 'lenis';
 import FluidBackground from './components/FluidBackground';
 import { Button } from './components/Button';
 import { Section } from './components/Section';
@@ -610,36 +609,50 @@ const App: React.FC = () => {
     
     // Disable Lenis on Safari to prevent compatibility issues
     if (isSafari) {
+      console.log('Safari detected - skipping Lenis');
       return;
     }
     
-    try {
-      const lenis = new Lenis({
-        duration: isMobile ? 1 : 0.8,
-        easing: (t) => t,
-        orientation: 'vertical',
-        gestureOrientation: 'vertical',
-        smoothWheel: !isMobile,
-        wheelMultiplier: 1.2,
-        smoothTouch: false,
-        touchMultiplier: 2,
-        infinite: false,
-        autoResize: true,
-      });
+    // Dynamically import and initialize Lenis
+    let cleanup: (() => void) | null = null;
+    
+    import('lenis').then((LenisModule) => {
+      const Lenis = LenisModule.default;
+      
+      try {
+        const lenis = new Lenis({
+          duration: isMobile ? 1 : 0.8,
+          easing: (t) => t,
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: !isMobile,
+          wheelMultiplier: 1.2,
+          smoothTouch: false,
+          touchMultiplier: 2,
+          infinite: false,
+          autoResize: true,
+        });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
 
-    requestAnimationFrame(raf);
+        requestAnimationFrame(raf);
 
-      return () => {
-        lenis.destroy();
-      };
-    } catch (error) {
-      console.error('Lenis initialization error:', error);
-    }
+        cleanup = () => {
+          lenis.destroy();
+        };
+      } catch (error) {
+        console.error('Lenis initialization error:', error);
+      }
+    }).catch((error) => {
+      console.warn('Failed to load Lenis:', error);
+    });
+
+    return () => {
+      if (cleanup) cleanup();
+    };
   }, []);
 
   return (
