@@ -2,30 +2,28 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "headers": [
+  "redirects": [
     {
-      "source": "/assets/(.*)",
-      "headers": [
+      "source": "/",
+      "has": [
         {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "type": "host",
+          "value": "boredtourist.com"
         }
-      ]
-    },
-    {
-      "source": "/(.*).html",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
+      ],
+      "destination": "https://www.boredtourist.com",
+      "permanent": true
     }
   ],
-  "rewrites": [
+  "headers": [
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
     }
   ]
 }
